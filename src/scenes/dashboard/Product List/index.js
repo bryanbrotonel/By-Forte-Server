@@ -10,8 +10,8 @@ export class ProductList extends Component {
         <div className="card mx-auto" style={divStyle}>
           <div className="card-body">
             <h5 className="card-title">Product List</h5>
-            <div className="card-content">
-              <table className="table">
+            <div className="card-content table-responsive">
+              <table className="table table-sm">
                 <thead>
                   <tr>
                     <th scope="col">Product</th>

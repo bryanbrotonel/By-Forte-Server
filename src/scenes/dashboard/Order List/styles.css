@@ -1,0 +1,4 @@
+.card-content {
+  height: 25vh !important;
+  overflow: scroll;
+}
