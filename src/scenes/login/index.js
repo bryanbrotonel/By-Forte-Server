@@ -4,24 +4,28 @@ export class Login extends Component {
   render() {
     return (
       <div>
+        <div className="text-center">
+          <h5>by forte server login</h5>
+        </div>
+        <hr />
         <form>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="email"
-              class="form-control"
+              className="form-control"
               id="email"
               placeholder="Email"
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="password"
-              class="form-control"
+              className="form-control"
               id="password"
               placeholder="Password"
             />
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </form>

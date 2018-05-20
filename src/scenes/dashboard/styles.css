@@ -1,0 +1,4 @@
+div[class^="col"] {
+  margin: 10px 0;
+  width: 100%;
+}
