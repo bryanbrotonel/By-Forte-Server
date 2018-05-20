@@ -18,7 +18,7 @@ export class Dashboard extends Component {
           <div className="card-wrapper col-sm-6">
             <ProductList />
           </div>
-          <div className="card-wrapper col-sm-6">
+          <div className="card-wrapper col-sm-6 mx">
             <AddProduct />
           </div>
         </div>
