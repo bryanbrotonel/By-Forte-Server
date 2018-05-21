@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { FormGroup } from "./components/formGroup";
+
+import firebase from "firebase";
+
 import "./styles.css";
 
 export class AddProduct extends Component {
@@ -20,9 +23,19 @@ export class AddProduct extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
-    //TODO: Send product ot database
-    event.preventDefault();
+  handleSubmit() {
+    var key = firebase
+      .database()
+      .ref("productList")
+      .push().key;
+
+    var updates = {};
+    updates["productList/" + key] = this.state;
+
+    firebase
+      .database()
+      .ref()
+      .update(updates);
   }
 
   handleChange = ({ target: { id, value } }) => {
@@ -87,9 +100,16 @@ export class AddProduct extends Component {
                     value={this.state.productLargeQuantity}
                     onChange={this.handleChange}
                   />
-                  <FormGroup id="imageInpput" type="file" name="image" />
+                  <FormGroup
+                    onChange={this.handleChange}
+                    id="imageInpput"
+                    type="file"
+                    name="image"
+                  />
                 </div>
-                <button className="btn btn-primary">Add Product</button>
+                <button type="submit" className="btn btn-primary">
+                  Add Product
+                </button>
               </form>
             </div>
           </div>

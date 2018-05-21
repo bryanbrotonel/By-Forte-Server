@@ -4,7 +4,7 @@ import "./styles.css";
 export class OrderList extends Component {
   render() {
     var divStyle = {
-      "height": "25vh",
+      height: "250px",
       overflow: "scroll"
     };
 
