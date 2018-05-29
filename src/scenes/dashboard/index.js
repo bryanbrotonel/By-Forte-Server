@@ -12,13 +12,13 @@ export class Dashboard extends Component {
           <h3>Dashboard</h3>
         </div>
         <div className="row w-100 mx-auto">
-          <div className="card-wrapper col-sm-6">
+          <div className="card-wrapper col-lg-6">
             <OrderList />
           </div>
-          <div className="card-wrapper col-sm-6">
+          <div className="card-wrapper col-lg-6">
             <ProductList />
           </div>
-          <div className="card-wrapper col-sm-6 mx">
+          <div className="card-wrapper col-lg-6">
             <AddProduct />
           </div>
         </div>
