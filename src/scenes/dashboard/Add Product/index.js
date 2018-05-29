@@ -3,8 +3,6 @@ import { FormGroup } from "./components/formGroup";
 
 import firebase from "firebase";
 
-import "./styles.css";
-
 export class AddProduct extends Component {
   constructor(props) {
     super(props);
