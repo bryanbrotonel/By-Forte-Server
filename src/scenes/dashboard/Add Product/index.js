@@ -31,7 +31,9 @@ export class AddProduct extends Component {
     const thisRef = this;
     this.uploadProductImages(this.files)
       .then(function(productImagesPaths) {
-        console.log("productImagesPaths", productImagesPaths);
+        var finalProduct = thisRef.state;
+        finalProduct.productImages = productImagesPaths;
+
         const key = firebase
           .database()
           .ref("productList")
@@ -39,7 +41,7 @@ export class AddProduct extends Component {
 
         var updates = {};
 
-        updates["productList/" + key] = thisRef.state;
+        updates["productList/" + key] = finalProduct;
 
         firebase
           .database()
@@ -78,9 +80,6 @@ export class AddProduct extends Component {
 
     return new Promise(function(resolve, reject) {
       for (var i = 0; i < imagePathList.length; i++) {
-        console.log(imagePathList[i]);
-        thisRef.productImagesPaths.push(imagePathList[i]);
-
         var uploadTask = storageRef.child(imagePathList[i]).put(files[i]);
 
         uploadTask.on(
@@ -105,11 +104,17 @@ export class AddProduct extends Component {
           function(error) {
             console.log(error.code);
           },
+          // eslint-disable-next-line
           function() {
             // Upload completed successfully
-            return thisRef.productImagesPaths
-              ? resolve(thisRef.productImagesPaths)
-              : reject(thisRef.productImagesPaths);
+            uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(function(downloadURL) {
+                thisRef.productImagesPaths.push(downloadURL);
+                return thisRef.productImagesPaths
+                  ? resolve(thisRef.productImagesPaths)
+                  : reject(thisRef.productImagesPaths);
+              });
           }
         );
       }
