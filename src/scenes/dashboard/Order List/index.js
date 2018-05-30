@@ -32,7 +32,7 @@ export class OrderList extends Component {
 
   getOrders() {
     const thisRef = this;
-    this.orderList = [];
+    
     return new Promise(function(resolve, reject) {
       var orders = [];
       firebase

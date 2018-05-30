@@ -97,7 +97,6 @@ export class AddProduct extends Component {
                 console.log("Upload is running");
                 break;
               default:
-                console.log("Upload is running");
                 break;
             }
           },
@@ -111,9 +110,13 @@ export class AddProduct extends Component {
               .getDownloadURL()
               .then(function(downloadURL) {
                 thisRef.productImagesPaths.push(downloadURL);
-                return thisRef.productImagesPaths
-                  ? resolve(thisRef.productImagesPaths)
-                  : reject(thisRef.productImagesPaths);
+                if (
+                  thisRef.productImagesPaths.length === imagePathList.length
+                ) {
+                  return thisRef.productImagesPaths
+                    ? resolve(thisRef.productImagesPaths)
+                    : reject(thisRef.productImagesPaths);
+                }
               });
           }
         );
