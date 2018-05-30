@@ -12,7 +12,14 @@ export class FormGroup extends Component {
       case "file":
         return (
           <div className="form-group col-sm-6">
-            <input type={`${inputType}`} id={`${inputId}`} accept="image/*" />
+            <input
+              type={`${inputType}`}
+              id={`${inputId}`}
+              accept="image/*"
+              onChange={inputOnChange}
+              multiple
+              required
+            />
           </div>
         );
       case "number":
@@ -25,6 +32,7 @@ export class FormGroup extends Component {
               className="form-control"
               placeholder={`${inputName}`}
               onChange={inputOnChange}
+              required
             />
           </div>
         );
@@ -38,6 +46,7 @@ export class FormGroup extends Component {
               className="form-control"
               placeholder={`${inputName}`}
               onChange={inputOnChange}
+              required
             />
           </div>
         );

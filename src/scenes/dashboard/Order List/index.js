@@ -12,12 +12,7 @@ export class OrderList extends Component {
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.getOrders = this.getOrders.bind(this);
-  }
-
-  componentDidUpdate() {
-    console.log("updated");
   }
 
   componentDidMount() {
