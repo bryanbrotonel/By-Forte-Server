@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup } from "./components/formGroup";
 
-import firebase from "firebase";
+import * as firebase from "firebase";
 
 export class AddProduct extends Component {
   constructor(props) {
@@ -14,37 +14,133 @@ export class AddProduct extends Component {
       productPrint: "",
       productSmallQuantity: 0,
       productMediumQuantity: 0,
-      productLargeQuantity: 0
+      productLargeQuantity: 0,
+      productImages: []
     };
 
+    this.files = [];
+
+    this.uploadProductImages = this.uploadProductImages.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleProductImageInput = this.handleProductImageInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
-    var key = firebase
-      .database()
-      .ref("productList")
-      .push().key;
+  handleSubmit(event) {
+    event.preventDefault();
+    const thisRef = this;
+    this.uploadProductImages(this.files)
+      .then(function(productImagesPaths) {
+        console.log("productImagesPaths", productImagesPaths);
+        const key = firebase
+          .database()
+          .ref("productList")
+          .push().key;
 
-    var updates = {};
-    updates["productList/" + key] = this.state;
+        var updates = {};
 
-    firebase
-      .database()
-      .ref()
-      .update(updates);
+        updates["productList/" + key] = thisRef.state;
+
+        firebase
+          .database()
+          .ref()
+          .update(updates);
+      })
+      .catch(function(productImagesPaths) {
+        console.log("productImagesPaths", productImagesPaths);
+        console.log("thisRef.state.productImages", thisRef.state.productImages);
+      });
   }
 
-  handleChange = ({ target: { id, value } }) => {
-    this.setState({ [id]: value });
+  handleChange = ({ target: { id, value, files, type } }) => {
+    const thisRef = this;
+
+    if (type === "file") {
+      this.handleProductImageInput(files)
+        .then(function(productImagesPaths) {
+          thisRef.files = files;
+          value = productImagesPaths;
+          thisRef.setState({ [id]: value });
+        })
+        .catch(function(productImagesPaths) {
+          console.log("ERROR", productImagesPaths);
+        });
+    } else {
+      this.setState({ [id]: value });
+    }
   };
+
+  uploadProductImages(files) {
+    const thisRef = this;
+    const storageRef = firebase.storage().ref();
+    this.productImagesPaths = [];
+    const imagePathList = thisRef.state.productImages;
+
+    return new Promise(function(resolve, reject) {
+      for (var i = 0; i < imagePathList.length; i++) {
+        console.log(imagePathList[i]);
+        thisRef.productImagesPaths.push(imagePathList[i]);
+
+        var uploadTask = storageRef.child(imagePathList[i]).put(files[i]);
+
+        uploadTask.on(
+          firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+          function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress =
+              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log("Upload is paused");
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log("Upload is running");
+                break;
+              default:
+                console.log("Upload is running");
+                break;
+            }
+          },
+          function(error) {
+            console.log(error.code);
+          },
+          function() {
+            // Upload completed successfully
+            return thisRef.productImagesPaths
+              ? resolve(thisRef.productImagesPaths)
+              : reject(thisRef.productImagesPaths);
+          }
+        );
+      }
+    });
+  }
+
+  handleProductImageInput(files) {
+    const thisRef = this;
+    this.productImages = [];
+
+    return new Promise(function(resolve, reject) {
+      for (var i = 0; i < files.length; i++) {
+        const productName = thisRef.state.productName.toLowerCase();
+        const productVariation = thisRef.state.productVariation.toLowerCase();
+        const productTitle = productName + " - " + productVariation;
+        const name = +new Date() + "-" + files[i].name;
+
+        thisRef.productImages.push(
+          "images/products/" + productTitle + "/" + name
+        );
+      }
+      return thisRef.productImages
+        ? resolve(thisRef.productImages)
+        : reject(thisRef.productImages);
+    });
+  }
 
   render() {
     var divStyle = {
       minheight: "100%"
     };
-
     return (
       <React.Fragment>
         <div className="card mx-auto" style={divStyle}>
@@ -100,14 +196,16 @@ export class AddProduct extends Component {
                   />
                   <FormGroup
                     onChange={this.handleChange}
-                    id="imageInpput"
+                    id="productImages"
                     type="file"
                     name="image"
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
-                  Add Product
-                </button>
+                <input
+                  type="submit"
+                  className="btn btn-primary"
+                  value="Add Product"
+                />
               </form>
             </div>
           </div>
