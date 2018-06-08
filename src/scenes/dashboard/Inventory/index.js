@@ -4,12 +4,12 @@ import firebase from "firebase";
 
 import "./styles.css";
 
-export class ProductList extends Component {
+export class Inventory extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      productList: [],
+      inventory: [],
       initialOrdersLoaded: false,
       initialEdit: false
     };
@@ -18,37 +18,37 @@ export class ProductList extends Component {
   componentDidMount() {
     const self = this;
 
-    this.getProductList()
-      .then(function(productList) {
+    this.getInventory()
+      .then(function(inventory) {
         self.setState({
-          productList: productList,
+          inventory: inventory,
           initialOrdersLoaded: true
         });
       })
-      .catch(function(productList) {
-        console.log("getProductList: error", productList);
+      .catch(function(inventory) {
+        console.log("getinventory: error", inventory);
       });
 
-    this.editProductList()
-      .then(function(productList) {
+    this.editinventory()
+      .then(function(inventory) {
         self.setState({
-          productList: productList,
+          inventory: inventory,
           initialEdit: true
         });
       })
-      .catch(function(productList) {
-        console.log("editProductList: error", productList);
+      .catch(function(inventory) {
+        console.log("editinventory: error", inventory);
       });
   }
 
-  getProductList() {
+  getInventory() {
     const self = this;
 
     return new Promise(function(resolve, reject) {
-      var productItems = [];
+      var inventoryItems = [];
       firebase
         .database()
-        .ref("productList")
+        .ref("inventory")
         .on("child_added", function(childSnapshot) {
           var childSnapshotData = childSnapshot.val();
 
@@ -62,45 +62,45 @@ export class ProductList extends Component {
             productLargeQuantity: childSnapshotData.productLargeQuantity
           };
 
-          productItems.push(productItem);
+          inventoryItems.push(productItem);
 
           if (self.state.initialOrdersLoaded) {
-            this.setState({
-              productList: productItems
+            self.setState({
+              inventory: inventoryItems
             });
           }
 
-          return productItems ? resolve(productItems) : reject(productItems);
+          return inventoryItems ? resolve(inventoryItems) : reject(inventoryItems);
         });
     });
   }
 
-  editProductList() {
+  editinventory() {
     const self = this;
 
     return new Promise(function(resolve, reject) {
       firebase
         .database()
-        .ref("productList")
+        .ref("inventory")
         .on("child_changed", function(childSnapshot) {
-          const { productList, initialEdit } = self.state;
+          const { inventory, initialEdit } = self.state;
           const childSnapshotData = childSnapshot.val();
 
-          var index = productList.findIndex(
+          var index = inventory.findIndex(
             x =>
               x.productName === childSnapshotData.productName &&
               x.productVariation === childSnapshotData.productVariation
           );
 
-          productList[index] = childSnapshotData;
+          inventory[index] = childSnapshotData;
 
           if (initialEdit) {
             self.setState({
-              productList: productList
+              inventory: inventory
             });
           }
 
-          return productList ? resolve(productList) : reject(productList);
+          return inventory ? resolve(inventory) : reject(inventory);
         });
     });
   }
@@ -111,7 +111,7 @@ export class ProductList extends Component {
       overflow: "scroll"
     };
 
-    const productItemsRow = this.state.productList.map(product => (
+    const productItemsRow = this.state.inventory.map(product => (
       <tr key={`${product.productName} - ${product.productVariation}`}>
         <td>{product.productName}</td>
         <td>{product.productVariation}</td>
@@ -124,7 +124,7 @@ export class ProductList extends Component {
     return (
       <div className="card mx-auto">
         <div className="card-body">
-          <h5 className="card-title">Product List</h5>
+          <h5 className="card-title">Inventory</h5>
           <div className="table-responsive" style={divStyle}>
             <table className="table table-sm">
               <thead>

@@ -19,7 +19,6 @@ export class OrderList extends Component {
     const self = this;
     this.getOrders()
       .then(function(orders) {
-        console.log("then", orders);
         self.setState({
           orders: orders,
           initialOrdersLoaded: true
@@ -40,7 +39,7 @@ export class OrderList extends Component {
         .ref("orderList")
         .on("child_added", function(childSnapshot) {
           orders.push(childSnapshot.val());
-          
+
           if (self.state.initialOrdersLoaded) {
             self.setState({
               orders: orders

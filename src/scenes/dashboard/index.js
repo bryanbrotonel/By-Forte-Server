@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ProductList } from "./Product List";
+import { Inventory } from "./Inventory";
 import { AddProduct } from "./Add Product";
 import { OrderList } from "./Order List";
 import "./styles.css";
@@ -16,7 +16,7 @@ export class Dashboard extends Component {
             <OrderList />
           </div>
           <div className="card-wrapper col-lg-6">
-            <ProductList />
+            <Inventory />
           </div>
           <div className="card-wrapper col-lg-6">
             <AddProduct />

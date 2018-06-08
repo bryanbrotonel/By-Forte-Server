@@ -38,7 +38,7 @@ export class AddProduct extends Component {
         var updates = {};
 
         updates[
-          "productList/" +
+          "inventory/" +
             finalProduct.productName.toLowerCase() +
             " - " +
             finalProduct.productVariation.toLowerCase()
