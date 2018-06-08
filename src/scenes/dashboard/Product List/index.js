@@ -9,38 +9,100 @@ export class ProductList extends Component {
     super(props);
 
     this.state = {
-      productList: []
+      productList: [],
+      initialOrdersLoaded: false,
+      initialEdit: false
     };
   }
 
   componentDidMount() {
-    const thisRef = this;
+    const self = this;
 
-    this.productItems = [];
+    this.getProductList()
+      .then(function(productList) {
+        self.setState({
+          productList: productList,
+          initialOrdersLoaded: true
+        });
+      })
+      .catch(function(productList) {
+        console.log("getProductList: error", productList);
+      });
 
-    firebase
-      .database()
-      .ref("productList")
-      .once("value", function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          var childData = childSnapshot.val();
+    this.editProductList()
+      .then(function(productList) {
+        self.setState({
+          productList: productList,
+          initialEdit: true
+        });
+      })
+      .catch(function(productList) {
+        console.log("editProductList: error", productList);
+      });
+  }
+
+  getProductList() {
+    const self = this;
+
+    return new Promise(function(resolve, reject) {
+      var productItems = [];
+      firebase
+        .database()
+        .ref("productList")
+        .on("child_added", function(childSnapshot) {
+          var childSnapshotData = childSnapshot.val();
 
           let productItem = {
-            productName: childData.productName,
-            productVariation: childData.productVariation,
-            productMaterial: childData.productMaterial,
-            productPrint: childData.productPrint,
-            productSmallQuantity: childData.productSmallQuantity,
-            productMediumQuantity: childData.productMediumQuantity,
-            productLargeQuantity: childData.productLargeQuantity
+            productName: childSnapshotData.productName,
+            productVariation: childSnapshotData.productVariation,
+            productMaterial: childSnapshotData.productMaterial,
+            productPrint: childSnapshotData.productPrint,
+            productSmallQuantity: childSnapshotData.productSmallQuantity,
+            productMediumQuantity: childSnapshotData.productMediumQuantity,
+            productLargeQuantity: childSnapshotData.productLargeQuantity
           };
 
-          thisRef.productItems.push(productItem);
+          productItems.push(productItem);
+
+          if (self.state.initialOrdersLoaded) {
+            this.setState({
+              productList: productItems
+            });
+          }
+
+          return productItems ? resolve(productItems) : reject(productItems);
         });
-        thisRef.setState({
-          productList: thisRef.productItems
+    });
+  }
+
+  editProductList() {
+    const self = this;
+
+    return new Promise(function(resolve, reject) {
+      firebase
+        .database()
+        .ref("productList")
+        .on("child_changed", function(childSnapshot) {
+          const { productList, initialEdit } = self.state;
+          const childSnapshotData = childSnapshot.val();
+
+          var index = productList.findIndex(
+            x =>
+              x.productName === childSnapshotData.productName &&
+              x.productVariation === childSnapshotData.productVariation
+          );
+
+          productList[index] = childSnapshotData;
+
+          if (initialEdit) {
+            self.setState({
+              productList: productList
+            });
+          }
+
+          return productList ? resolve(productList) : reject(productList);
         });
-      });
+    });
   }
 
   render() {

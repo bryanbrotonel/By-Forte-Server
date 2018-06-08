@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { FormGroup } from "./components/formGroup";
 
-import * as firebase from "firebase";
+import firebase from 'firebase/app';
+import 'firebase/storage';
+import 'firebase/database';
 
 export class AddProduct extends Component {
   constructor(props) {
@@ -28,41 +30,47 @@ export class AddProduct extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const thisRef = this;
+    const self = this;
     this.uploadProductImages(this.files)
       .then(function(productImagesPaths) {
-        var finalProduct = thisRef.state;
+        var finalProduct = self.state;
         finalProduct.productImages = productImagesPaths;
-
-        const key = firebase
-          .database()
-          .ref("productList")
-          .push().key;
-
         var updates = {};
 
-        updates["productList/" + key] = finalProduct;
+        updates[
+          "productList/" +
+            finalProduct.productName.toLowerCase() +
+            " - " +
+            finalProduct.productVariation.toLowerCase()
+        ] = finalProduct;
 
         firebase
           .database()
           .ref()
           .update(updates);
+
+        alert(
+          "Successfully uploaded " +
+            finalProduct.productName +
+            " - " +
+            finalProduct.productVariation
+        );
       })
       .catch(function(productImagesPaths) {
         console.log("productImagesPaths", productImagesPaths);
-        console.log("thisRef.state.productImages", thisRef.state.productImages);
+        console.log("self.state.productImages", self.state.productImages);
       });
   }
 
   handleChange = ({ target: { id, value, files, type } }) => {
-    const thisRef = this;
+    const self = this;
 
     if (type === "file") {
       this.handleProductImageInput(files)
         .then(function(productImagesPaths) {
-          thisRef.files = files;
+          self.files = files;
           value = productImagesPaths;
-          thisRef.setState({ [id]: value });
+          self.setState({ [id]: value });
         })
         .catch(function(productImagesPaths) {
           console.log("ERROR", productImagesPaths);
@@ -73,10 +81,10 @@ export class AddProduct extends Component {
   };
 
   uploadProductImages(files) {
-    const thisRef = this;
+    const self = this;
     const storageRef = firebase.storage().ref();
     this.productImagesPaths = [];
-    const imagePathList = thisRef.state.productImages;
+    const imagePathList = self.state.productImages;
 
     return new Promise(function(resolve, reject) {
       for (var i = 0; i < imagePathList.length; i++) {
@@ -109,13 +117,13 @@ export class AddProduct extends Component {
             uploadTask.snapshot.ref
               .getDownloadURL()
               .then(function(downloadURL) {
-                thisRef.productImagesPaths.push(downloadURL);
+                self.productImagesPaths.push(downloadURL);
                 if (
-                  thisRef.productImagesPaths.length === imagePathList.length
+                  self.productImagesPaths.length === imagePathList.length
                 ) {
-                  return thisRef.productImagesPaths
-                    ? resolve(thisRef.productImagesPaths)
-                    : reject(thisRef.productImagesPaths);
+                  return self.productImagesPaths
+                    ? resolve(self.productImagesPaths)
+                    : reject(self.productImagesPaths);
                 }
               });
           }
@@ -125,23 +133,23 @@ export class AddProduct extends Component {
   }
 
   handleProductImageInput(files) {
-    const thisRef = this;
+    const self = this;
     this.productImages = [];
 
     return new Promise(function(resolve, reject) {
       for (var i = 0; i < files.length; i++) {
-        const productName = thisRef.state.productName.toLowerCase();
-        const productVariation = thisRef.state.productVariation.toLowerCase();
+        const productName = self.state.productName.toLowerCase();
+        const productVariation = self.state.productVariation.toLowerCase();
         const productTitle = productName + " - " + productVariation;
         const name = +new Date() + "-" + files[i].name;
 
-        thisRef.productImages.push(
+        self.productImages.push(
           "images/products/" + productTitle + "/" + name
         );
       }
-      return thisRef.productImages
-        ? resolve(thisRef.productImages)
-        : reject(thisRef.productImages);
+      return self.productImages
+        ? resolve(self.productImages)
+        : reject(self.productImages);
     });
   }
 

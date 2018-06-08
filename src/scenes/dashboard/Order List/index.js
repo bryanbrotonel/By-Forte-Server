@@ -16,11 +16,11 @@ export class OrderList extends Component {
   }
 
   componentDidMount() {
-    const thisRef = this;
+    const self = this;
     this.getOrders()
       .then(function(orders) {
         console.log("then", orders);
-        thisRef.setState({
+        self.setState({
           orders: orders,
           initialOrdersLoaded: true
         });
@@ -31,8 +31,8 @@ export class OrderList extends Component {
   }
 
   getOrders() {
-    const thisRef = this;
-    
+    const self = this;
+
     return new Promise(function(resolve, reject) {
       var orders = [];
       firebase
@@ -40,11 +40,13 @@ export class OrderList extends Component {
         .ref("orderList")
         .on("child_added", function(childSnapshot) {
           orders.push(childSnapshot.val());
-          if (thisRef.state.initialOrdersLoaded) {
-            thisRef.setState({
+          
+          if (self.state.initialOrdersLoaded) {
+            self.setState({
               orders: orders
             });
           }
+
           return orders ? resolve(orders) : reject(orders);
         });
     });
