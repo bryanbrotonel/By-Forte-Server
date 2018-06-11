@@ -3,18 +3,16 @@ import PropTypes from "prop-types";
 
 export default class OrderRow extends Component {
   render() {
-    const props = this.props;
-    const { order, toggle, modal } = this.props;
+    const { order, toggle } = this.props;
 
     const customerInfo = order.customerInfo;
-    
+
     return (
       <React.Fragment>
         <tr
           key={order.orderID}
           id={order.orderID}
           onClick={function() {
-            console.log("order row modal", modal);
             toggle(order);
           }}
         >

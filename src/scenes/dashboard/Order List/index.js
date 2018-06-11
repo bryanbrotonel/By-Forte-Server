@@ -66,7 +66,6 @@ export class OrderList extends Component {
 
   render() {
     const { orders, selectedOrder, modal } = this.state;
-    console.log('order list modal', modal);
 
     var divStyle = {
       height: "250px",
@@ -93,7 +92,7 @@ export class OrderList extends Component {
 
     return (
       <React.Fragment>
-        <div className="card mx-auto">
+        <div className="card mx-auto w-100">
           <div className="card-body">
             <h5 className="card-title">Order List</h5>
             <div className=" table-responsive" style={divStyle}>

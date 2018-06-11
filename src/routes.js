@@ -16,7 +16,7 @@ const dashboardLoadable = Loadable({
 
 const Routes = () => (
   <Switch>
-    <Redirect from="/home" to="/" />
+    <Redirect from="/login" to="/" />
     <Route exact={true} path="/" component={loginLoadable} />
     <Route exact={true} path="/dashboard" component={dashboardLoadable} />
   </Switch>

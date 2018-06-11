@@ -35,11 +35,11 @@ export default class OrderModal extends Component {
     return (
       <Modal
         isOpen={modal}
-        toggle={toggle}
+        toggle={() => toggle(null)}
         onKeyDown={this.onKeyPressed}
         tabIndex="0"
       >
-        <ModalHeader toggle={toggle}>
+        <ModalHeader toggle={() => toggle(null)}>
           Order: {selectedOrder.orderID}
         </ModalHeader>
         <ModalBody>
@@ -55,7 +55,7 @@ export default class OrderModal extends Component {
                   <th scope="col">Product</th>
                   <th scope="col">Variation</th>
                   <th scope="col">Size</th>
-                  <th scope="col">Quantity</th>
+                  <th scope="col">Qty</th>
                 </tr>
               </thead>
               <tbody>{itemRows}</tbody>

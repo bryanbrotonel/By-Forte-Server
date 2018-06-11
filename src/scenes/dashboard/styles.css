@@ -1,4 +1,11 @@
+/* Medium devices (tablets, 768px and up) */
 .card-wrapper {
   margin: 10px 0;
-  width: 100%;
+  padding: 0 10px;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .card-wrapper {
+  }
 }

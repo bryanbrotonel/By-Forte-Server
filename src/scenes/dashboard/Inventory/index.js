@@ -122,8 +122,8 @@ export class Inventory extends Component {
     ));
 
     return (
-      <div className="card mx-auto">
-        <div className="card-body">
+      <div className="card mx-auto w-100">
+        <div className="card-body w-100">
           <h5 className="card-title">Inventory</h5>
           <div className="table-responsive" style={divStyle}>
             <table className="table table-sm">
