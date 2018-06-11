@@ -5,12 +5,12 @@ import Loadable from "react-loadable";
 import Loading from "./components/Loading";
 
 const loginLoadable = Loadable({
-  loader: () => import("./scenes/Login"),
+  loader: () => import("./scenes/login"),
   loading: Loading
 });
 
 const dashboardLoadable = Loadable({
-  loader: () => import("./scenes/Dashboard"),
+  loader: () => import("./scenes/dashboard"),
   loading: Loading
 });
 
