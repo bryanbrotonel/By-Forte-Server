@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
 import firebase from "firebase";
+import Loadable from "react-loadable";
+
+import OrderRow from "./components/Order Row";
+import Loading from "./../../../components/Loading";
 
 export class OrderList extends Component {
   constructor() {
@@ -8,11 +12,21 @@ export class OrderList extends Component {
 
     this.state = {
       orders: [],
-      initialOrdersLoaded: false
+      initialOrdersLoaded: false,
+      modal: false,
+      selectedOrder: null
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getOrders = this.getOrders.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  toggleModal(order) {
+    this.setState({
+      modal: !this.state.modal,
+      selectedOrder: order
+    });
   }
 
   componentDidMount() {
@@ -45,28 +59,37 @@ export class OrderList extends Component {
               orders: orders
             });
           }
-
           return orders ? resolve(orders) : reject(orders);
         });
     });
   }
 
   render() {
+    const { orders, selectedOrder, modal } = this.state;
+    console.log('order list modal', modal);
+
     var divStyle = {
       height: "250px",
       overflow: "scroll"
     };
 
-    const orderRows = this.state.orders.map(order => (
-      <tr key={order.orderID}>
-        <td>{order.orderID}</td>
-        <td>
-          {order.customerInfo.firstName} {order.customerInfo.lastName}
-        </td>
-        <td>{order.date}</td>
-        <td>{order.time}</td>
-      </tr>
+    const orderRows = orders.map(order => (
+      <OrderRow
+        key={order.orderID}
+        order={order}
+        modal={modal}
+        toggle={this.toggleModal}
+      />
     ));
+
+    const OrderModalLoading = Loadable({
+      loader: () => import("./components/Order Modal"),
+      loading: Loading,
+      render(loaded, props) {
+        let Component = loaded.default;
+        return <Component {...props} />;
+      }
+    });
 
     return (
       <React.Fragment>
@@ -88,6 +111,13 @@ export class OrderList extends Component {
             </div>
           </div>
         </div>
+        {this.state.selectedOrder !== null ? (
+          <OrderModalLoading
+            selectedOrder={selectedOrder}
+            toggle={this.toggleModal}
+            modal={modal}
+          />
+        ) : null}
       </React.Fragment>
     );
   }

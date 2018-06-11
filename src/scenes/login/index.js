@@ -3,6 +3,31 @@ import React, { Component } from "react";
 import "./styles.css";
 
 export default class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: "",
+      password: ""
+    };
+
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleFormChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const id = target.id;
+
+    this.setState({
+      [id]: value
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div className="middle-align">
@@ -10,13 +35,14 @@ export default class Login extends Component {
           <div className="my-4">
             <h1 className="h3 mb-3 text-center">Please sign in</h1>
             <div className="w-75 mx-auto">
-              <form>
+              <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
                     type="email"
                     className="form-control"
                     id="email"
                     placeholder="Email"
+                    onChange={this.handleFormChange}
                     required
                     autoFocus
                   />
@@ -27,6 +53,7 @@ export default class Login extends Component {
                     id="inputPassword"
                     className="form-control"
                     placeholder="Password"
+                    onChange={this.handleFormChange}
                     required
                   />
                 </div>
@@ -34,7 +61,7 @@ export default class Login extends Component {
                   Login
                 </button>
               </form>
-              <p className="mt-3 text-muted text-center">&copy; 2017-2018</p>
+              <p className="mt-3 text-muted text-center">By Forte</p>
             </div>
           </div>
         </div>
