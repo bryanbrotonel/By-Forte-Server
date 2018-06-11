@@ -4,10 +4,10 @@ import { AddProduct } from "./Add Product";
 import { OrderList } from "./Order List";
 import "./styles.css";
 
-export class Dashboard extends Component {
+export default class Dashboard extends Component {
   render() {
     return (
-      <React.Fragment>
+      <div className="container">
         <div className="text-center">
           <h3>Dashboard</h3>
         </div>
@@ -22,7 +22,7 @@ export class Dashboard extends Component {
             <AddProduct />
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

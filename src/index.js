@@ -1,11 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+
+import registerServiceWorker from "./registerServiceWorker";
 
 import firebase from "firebase/app";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import registerServiceWorker from './registerServiceWorker';
+import App from "./scenes/App";
+
+import "./index.css";
 
 // Initialize Firebase
 let config = {
@@ -18,5 +21,11 @@ let config = {
 };
 firebase.initializeApp(config);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById("root")
+);
+
 registerServiceWorker();
