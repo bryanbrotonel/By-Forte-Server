@@ -37,13 +37,13 @@ export default class Dashboard extends Component {
   }
 
   checkUser() {
-    var user = firebase.auth().currentUser;
-
-    if (!user) {
-      this.setState({
-        user: false
-      });
-    }
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        this.setState({
+          user: false
+        });
+      }
+    });
   }
 
   render() {
