@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment"
 
 export default class OrderRow extends Component {
+
   render() {
     const { order, toggle } = this.props;
-
     const customerInfo = order.customerInfo;
+    const orderTime = order.time
+
+    const momentTime = moment(orderTime.timeStamp).utcOffset(orderTime.offset);
+
+    const date = momentTime.format("DD/MM/YYYY");
+    const time = momentTime.format("hh:mm A");
 
     return (
       <React.Fragment>
@@ -20,8 +27,8 @@ export default class OrderRow extends Component {
           <td>
             {customerInfo.firstName} {customerInfo.lastName}
           </td>
-          <td>{order.date}</td>
-          <td>{order.time}</td>
+          <td>{date}</td>
+          <td>{time}</td>
         </tr>
       </React.Fragment>
     );
