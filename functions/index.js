@@ -22,7 +22,8 @@ const mailTransport = nodemailer.createTransport({
 exports.sendOrderInvoice = functions.database
   .ref("/orderList/{pushID}")
   .onCreate((snapshot, context) => {
-    return sendInvoiceEmail(customerInfo.email, snapshot.val());
+    const order = snapshot.val();
+    return sendInvoiceEmail(order.customerInfo.email, order);
   });
 
 // Sends a welcome email to the given user.
