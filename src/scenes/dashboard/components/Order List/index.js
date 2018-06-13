@@ -4,9 +4,9 @@ import firebase from "firebase";
 import Loadable from "react-loadable";
 
 import OrderRow from "./components/Order Row";
-import Loading from "./../../../components/Loading";
+import Loading from "./../../../../components/Loading";
 
-export class OrderList extends Component {
+export default class OrderList extends Component {
   constructor() {
     super();
 

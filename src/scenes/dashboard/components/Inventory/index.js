@@ -4,7 +4,7 @@ import firebase from "firebase";
 
 import "./styles.css";
 
-export class Inventory extends Component {
+export default class Inventory extends Component {
   constructor(props) {
     super(props);
 
