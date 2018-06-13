@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 
+import Loadable from "react-loadable";
 import { Redirect } from "react-router";
 
 import Navbar from "./../../components/Navbar";
-import { Inventory } from "./Inventory";
-import { AddProduct } from "./Add Product";
-import { OrderList } from "./Order List";
+import Loading from "./../../components/Loading";
+
 import "./styles.css";
 
 export default class Dashboard extends Component {
@@ -47,6 +47,20 @@ export default class Dashboard extends Component {
   }
 
   render() {
+    const OrderListLoadable = Loadable({
+      loader: () => import("./components/Order List"),
+      loading: Loading
+    });
+
+    const InventoryLoadable = Loadable({
+      loader: () => import("./components/Inventory"),
+      loading: Loading
+    });
+
+    const AddProdLoadable = Loadable({
+      loader: () => import("./components/Add Product"),
+      loading: Loading
+    });
     const { user } = this.state;
 
     return user ? (
@@ -58,13 +72,13 @@ export default class Dashboard extends Component {
           </div>
           <div className="row mx-auto">
             <div className="card-wrapper col-lg-6">
-              <OrderList />
+              <OrderListLoadable />
             </div>
             <div className="card-wrapper col-lg-6">
-              <Inventory />
+              <InventoryLoadable />
             </div>
             <div className="card-wrapper col-lg-6">
-              <AddProduct />
+              <AddProdLoadable />
             </div>
           </div>
         </div>

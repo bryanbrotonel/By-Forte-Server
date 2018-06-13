@@ -5,7 +5,7 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import 'firebase/database';
 
-export class AddProduct extends Component {
+export default class AddProduct extends Component {
   constructor(props) {
     super(props);
 
