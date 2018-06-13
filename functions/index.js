@@ -22,9 +22,12 @@ const mailTransport = nodemailer.createTransport({
 exports.sendOrderInvoice = functions.database
   .ref("/orderList/{pushID}")
   .onCreate((snapshot, context) => {
+    
+    // Get customer info
+    const customerInfo = snapshot.val().customerInfo;
     return sendInvoiceEmail(
-      "bryan.brotonel98@gmail.com",
-      "Bryan",
+      customerInfo.email,
+      customerInfo.firstName + " " + customerInfo.lastName,
       snapshot.val()
     );
   });
@@ -41,6 +44,17 @@ function sendInvoiceEmail(email, displayName, order) {
     to: email
   };
 
+  // Format cart items
+  var cartItemRows = "";
+  for (var i = 0; i < cartItems.length; i++) {
+    const cartItem = cartItems[i];
+
+    cartItemRows += `<p> ${cartItem.itemQuantity} x ${cartItem.productName} - ${
+      cartItem.productVariation
+    } - ${cartItem.itemSize.charAt(0)} for $${cartItem.itemPrice}</p>`;
+  }
+
+  // Get current date and time
   const date = moment(orderTime.timeStamp)
     .utcOffset(orderTime.offset)
     .format("DD/MM/YYYY");
@@ -48,16 +62,8 @@ function sendInvoiceEmail(email, displayName, order) {
     .utcOffset(orderTime.offset)
     .format("hh:mm A");
 
-  var cartItemRows = "";
-
-  for (var i = 0; i < cart.itemCount; i++) {
-    const cartItem = cartItems[i];
-    cartItemRows += `<p> ${cartItem.itemQuantity} x ${cartItem.productName} - ${
-      cartItem.productVariation
-    } - ${cartItem.itemSize.charAt(0)} for $${cartItem.itemPrice}</p>`;
-  }
-
-  mailOptions.subject = `${APP_NAME}: An Order Has Been Placed!`;
+  // Set mail options for invoice mail sending thorough nodemailer
+  mailOptions.subject = `${APP_NAME} Order #${order.orderID} Invoice`;
   mailOptions.html = `
   <html>
 
@@ -75,8 +81,9 @@ function sendInvoiceEmail(email, displayName, order) {
       font-family: 'Roboto', sans-serif;
     }
 
+    h2,
     h3,
-    h2 {
+    h4 {
       font-family: 'Oswald', sans-serif;
     }
   </style>
@@ -96,40 +103,58 @@ function sendInvoiceEmail(email, displayName, order) {
         <br>
         <div>
           <h2>Order #${order.orderID}</h2>
-          <p>To: ${customerInfo.firstName} ${customerInfo.lastName}</a>
+          <p>To: ${displayName}</a>
           </p>
         </div>
         <br>
         <div>
-          <p>Thank you for placing your order with By Forte. Your order number and details are listed
-             below. All e-Transfers should be directed to either Bryan at
-             <a href="mailto:bryan.brotonel98@gmail.ca">bryan.brotonel98@gmail.ca</a> or Trisha at
-             <a href="mailto:tfranciaa@gmail.com.">tfranciaa@gmail.com.</a>
-           </p>
-           <p>
-             The deadline for all payments are June 16, 2018 7 PM. All orders will begin processing after the deadline.
-           </p>
+          <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to either Bryan at
+            <a href="mailto:bryan.brotonel98@gmail.ca">bryan.brotonel98@gmail.ca</a> or Trisha at
+            <a href="mailto:tfranciaa@gmail.com.">tfranciaa@gmail.com.</a>
+          </p>
+          <p>
+            The deadline for all payments are June 16, 2018 7 PM. All orders will begin processing after the deadline.
+          </p>
         </div>
         <br>
         <div>
           <p><strong>Date:</strong> ${date} ${time}<br>
-          <strong>Order Number:</strong> #${order.orderID}<br>
-          <strong>Payment Method:</strong> E-Transfer/Cash
-        </p>
+            <strong>Order Number:</strong> #${order.orderID}<br>
+            <strong>Payment Method:</strong> E-Transfer/Cash
+          </p>
         </div>
         <hr>
         <br>
         <div>
           ${cartItemRows}
         </div>
+        <br>
+        <div class="bg-light">
+          <div class="row justify-content-end pr-4">
+            <h4 class="mt-1 mb-2"><strong>Subtotal:</strong> $${
+              cart.subtotal
+            }</h4>
+          </div>
+          <div class="row justify-content-end pr-4 mb-0">
+            <h4 class="mb-1"><strong>Total:</strong> $${cart.total}</h4>
+          </div>
+        </div>
         <br />
+          <div class="mx-auto text-center pb-3">
+            <p>Thank you for your purchase <br> If you have any questions, please contact us by email
+              at <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a><br>
+              <strong><a href="https://byforte.store">WWW.BYFORTE.STORE</a></strong>
+            </p>
+        </div>
       </div>
     </div>
   </body>
 
   </html>
+
   `;
   return mailTransport.sendMail(mailOptions).then(() => {
+    // Log to firebase console that invoice was sent
     return console.log(`${APP_NAME} invoice sent to:`, email);
   });
 }
