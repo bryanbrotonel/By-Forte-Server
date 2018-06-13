@@ -22,18 +22,11 @@ const mailTransport = nodemailer.createTransport({
 exports.sendOrderInvoice = functions.database
   .ref("/orderList/{pushID}")
   .onCreate((snapshot, context) => {
-    
-    // Get customer info
-    const customerInfo = snapshot.val().customerInfo;
-    return sendInvoiceEmail(
-      customerInfo.email,
-      customerInfo.firstName + " " + customerInfo.lastName,
-      snapshot.val()
-    );
+    return sendInvoiceEmail(customerInfo.email, snapshot.val());
   });
 
 // Sends a welcome email to the given user.
-function sendInvoiceEmail(email, displayName, order) {
+function sendInvoiceEmail(email, order) {
   const customerInfo = order.customerInfo;
   const cart = order.cart;
   const cartItems = cart.items;
@@ -65,60 +58,78 @@ function sendInvoiceEmail(email, displayName, order) {
   // Set mail options for invoice mail sending thorough nodemailer
   mailOptions.subject = `${APP_NAME} Order #${order.orderID} Invoice`;
   mailOptions.html = `
+  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
   <html>
 
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>By Forte Invoice #${order.orderID}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.5/css/uikit.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
+
+
+    <style>
+      @font-face {
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Oswald Regular'), local('Oswald-Regular'), url('https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752GT8D.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Roboto'), local('Roboto-Regular'), url('https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf') format('truetype');
+      }
+
+      body {
+        width: 100%;
+        margin: 0px;
+      }
+    </style>
   </head>
 
-  <style media="screen">
-    p {
-      font-family: 'Roboto', sans-serif;
-    }
 
-    h2,
-    h3,
-    h4 {
-      font-family: 'Oswald', sans-serif;
-    }
-  </style>
 
-  <body>
-    <div class="container py-3 h-100">
-      <div class="row justify-content-between">
-        <div class="col-9">
-          <h3 class="my-0">By Forte</h3>
+  <body style="width: 100%; margin: 0px;">
+    <div style="margin: 0 auto; padding: 0 20px; max-width: 800px;">
+      <div style="padding-top: 20px;">
+        <div style="display: inline-block;">
+          <h2 style="font-family: 'Oswald', sans-serif; margin: 0;">By Forte</h2>
           <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a>
         </div>
-        <div class="col-3 text-right align-middle">
-          <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2FBy%20Forte%20Primary%20Logo%20Email.png?alt=media&token=66447c8f-373b-40e9-b51e-45ff1a994ff0" alt="By Forte">
+        <div style="display: inline-block; float: right;">
+          <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2FBy%20Forte%20Primary%20Logo%20Email.png?alt=media&amp;token=66447c8f-373b-40e9-b51e-45ff1a994ff0" alt="By Forte">
         </div>
       </div>
       <div>
         <br>
         <div>
-          <h2>Order #${order.orderID}</h2>
-          <p>To: ${displayName}</a>
+          <h3 style="font-family: 'Oswald', sans-serif; margin: 0;">Order #${
+            order.orderID
+          }</h3>
+          <p style="font-family: 'Roboto', sans-serif;">To: ${customerInfo.firstName +
+            " " +
+            customerInfo.lastName}
           </p>
         </div>
         <br>
-        <div>
+        <div style="font-family: 'Roboto', sans-serif; ">
           <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to either Bryan at
             <a href="mailto:bryan.brotonel98@gmail.ca">bryan.brotonel98@gmail.ca</a> or Trisha at
             <a href="mailto:tfranciaa@gmail.com.">tfranciaa@gmail.com.</a>
           </p>
           <p>
-            The deadline for all payments are June 16, 2018 7 PM. All orders will begin processing after the deadline.
+            The deadline for all payments is June 15, 2018 11:59 PM. All orders will begin processing after the deadline.
           </p>
         </div>
         <br>
         <div>
-          <p><strong>Date:</strong> ${date} ${time}<br>
+          <p style="font-family: 'Roboto', sans-serif;"><strong>Date:</strong> ${date} ${time}<br>
             <strong>Order Number:</strong> #${order.orderID}<br>
             <strong>Payment Method:</strong> E-Transfer/Cash
           </p>
@@ -129,22 +140,22 @@ function sendInvoiceEmail(email, displayName, order) {
           ${cartItemRows}
         </div>
         <br>
-        <div class="bg-light">
-          <div class="row justify-content-end pr-4">
-            <h4 class="mt-1 mb-2"><strong>Subtotal:</strong> $${
-              cart.subtotal
-            }</h4>
+        <div style="background-color: #FAFAFA; padding: 10px 10px 10px 0; font-size: 20px; font-family: 'Roboto', sans-serif;" align="right">
+          <div>
+            <p style="margin: 0;">
+              <strong>Subtotal:</strong> $${cart.subtotal}</p>
           </div>
-          <div class="row justify-content-end pr-4 mb-0">
-            <h4 class="mb-1"><strong>Total:</strong> $${cart.total}</h4>
+          <div>
+            <p style="margin: 0;">
+              <strong>Total:</strong> $${cart.total}</p>
           </div>
         </div>
-        <br />
-          <div class="mx-auto text-center pb-3">
-            <p>Thank you for your purchase <br> If you have any questions, please contact us by email
-              at <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a><br>
-              <strong><a href="https://byforte.store">WWW.BYFORTE.STORE</a></strong>
-            </p>
+        <br>
+        <div style="" align="center">
+          <p style="font-family: 'Roboto', sans-serif;">Thank you for your purchase <br> If you have any questions, please contact us by email at
+            <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a>.<br>
+            <strong><a href="https://byforte.store">WWW.BYFORTE.STORE</a></strong>
+          </p>
         </div>
       </div>
     </div>
