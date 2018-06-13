@@ -162,7 +162,6 @@ function sendInvoiceEmail(email, order) {
   </body>
 
   </html>
-
   `;
   return mailTransport.sendMail(mailOptions).then(() => {
     // Log to firebase console that invoice was sent
