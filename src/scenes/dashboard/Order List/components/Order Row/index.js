@@ -9,10 +9,8 @@ export default class OrderRow extends Component {
     const customerInfo = order.customerInfo;
     const orderTime = order.time
 
-    const momentTime = moment(orderTime.timeStamp).utcOffset(orderTime.offset);
-
-    const date = momentTime.format("DD/MM/YYYY");
-    const time = momentTime.format("hh:mm A");
+    const date = moment(orderTime.timeStamp).format("DD/MM/YYYY");
+    const time = moment(orderTime.timeStamp).format("hh:mm A");
 
     return (
       <React.Fragment>

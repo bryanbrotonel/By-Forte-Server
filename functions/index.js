@@ -41,10 +41,12 @@ function sendInvoiceEmail(email, displayName, order) {
     to: email
   };
 
-  const momentTime = moment(orderTime.timeStamp).utcOffset(orderTime.offset);
-
-  const date = momentTime.format("DD/MM/YYYY");
-  const time = momentTime.format("hh:mm A");
+  const date = moment(orderTime.timeStamp)
+    .utcOffset(orderTime.offset)
+    .format("DD/MM/YYYY");
+  const time = moment(orderTime.timeStamp)
+    .utcOffset(orderTime.offset)
+    .format("hh:mm A");
 
   var cartItemRows = "";
 
