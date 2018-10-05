@@ -21,7 +21,7 @@ const mailTransport = nodemailer.createTransport({
 // Send order invoice to shopper
 exports.sendOrderInvoice = functions.database
   .ref("/orderList/{pushID}")
-  .onCreate((snapshot, context) => {
+  .onCreate(snapshot => {
     const order = snapshot.val();
     return sendInvoiceEmail(order.customerInfo.email, order);
   });
@@ -32,7 +32,6 @@ function sendInvoiceEmail(email, order) {
   const cart = order.cart;
   const cartItems = cart.items;
   const orderTime = order.time;
-
   const mailOptions = {
     from: `${APP_NAME} <noreply@firebase.com>`,
     to: email
@@ -94,14 +93,12 @@ function sendInvoiceEmail(email, order) {
     </style>
   </head>
 
-
-
   <body style="width: 100%; margin: 0px;">
     <div style="margin: 0 auto; padding: 0 20px; max-width: 800px;">
       <div style="padding-top: 20px;">
         <div style="display: inline-block;">
           <h2 style="font-family: 'Oswald', sans-serif; margin: 0;">By Forte</h2>
-          <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a>
+          <a href="mailto:${gmailEmail}">${gmailEmail}</a>
         </div>
         <div style="display: inline-block; float: right;">
           <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2FBy%20Forte%20Primary%20Logo%20Email.png?alt=media&amp;token=66447c8f-373b-40e9-b51e-45ff1a994ff0" alt="By Forte">
@@ -110,19 +107,14 @@ function sendInvoiceEmail(email, order) {
       <div>
         <br>
         <div>
-          <h3 style="font-family: 'Oswald', sans-serif; margin: 0;">Order #${
-            order.orderID
-          }</h3>
-          <p style="font-family: 'Roboto', sans-serif;">To: ${customerInfo.firstName +
-            " " +
-            customerInfo.lastName}
+          <h3 style="font-family: 'Oswald', sans-serif; margin: 0;">Order #${order.orderID}</h3>
+          <p style="font-family: 'Roboto', sans-serif;">To: ${customerInfo.firstName + " " + customerInfo.lastName}
           </p>
         </div>
         <br>
         <div style="font-family: 'Roboto', sans-serif; ">
-          <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to either Bryan at
-            <a href="mailto:bryan.brotonel98@gmail.ca">bryan.brotonel98@gmail.ca</a> or Trisha at
-            <a href="mailto:tfranciaa@gmail.com.">tfranciaa@gmail.com.</a>
+          <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to
+            <a href="mailto:${gmailEmail}">${gmailEmail}</a>
           </p>
           <p>
             The deadline for all payments is June 15, 2018 11:59 PM. All orders will begin processing after the deadline.
@@ -154,7 +146,7 @@ function sendInvoiceEmail(email, order) {
         <br>
         <div style="" align="center">
           <p style="font-family: 'Roboto', sans-serif;">Thank you for your purchase <br> If you have any questions, please contact us by email at
-            <a href="mailto:supplybyforte@gmail.com">supplybyforte@gmail.com</a>.<br>
+            <a href="mailto:${gmailEmail}">${gmailEmail}</a>.<br>
             <strong><a href="https://byforte.store">WWW.BYFORTE.STORE</a></strong>
           </p>
         </div>
