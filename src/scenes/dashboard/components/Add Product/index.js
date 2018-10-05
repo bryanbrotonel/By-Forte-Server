@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { FormGroup } from "./components/formGroup";
 
-import firebase from 'firebase/app';
-import 'firebase/storage';
-import 'firebase/database';
+import firebase from "firebase/app";
+import "firebase/storage";
+import "firebase/database";
 
 export default class AddProduct extends Component {
   constructor(props) {
@@ -12,11 +12,11 @@ export default class AddProduct extends Component {
     this.state = {
       productName: "",
       productVariation: "",
-      productMaterial: "",
-      productPrint: "",
+      productDescription: "",
       productSmallQuantity: 0,
       productMediumQuantity: 0,
       productLargeQuantity: 0,
+      productPrice: 0,
       productImages: []
     };
 
@@ -95,7 +95,7 @@ export default class AddProduct extends Component {
           function(snapshot) {
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress =
-              snapshot.bytesTransferred / snapshot.totalBytes * 100;
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED: // or 'paused'
@@ -118,9 +118,7 @@ export default class AddProduct extends Component {
               .getDownloadURL()
               .then(function(downloadURL) {
                 self.productImagesPaths.push(downloadURL);
-                if (
-                  self.productImagesPaths.length === imagePathList.length
-                ) {
+                if (self.productImagesPaths.length === imagePathList.length) {
                   return self.productImagesPaths
                     ? resolve(self.productImagesPaths)
                     : reject(self.productImagesPaths);
@@ -143,9 +141,7 @@ export default class AddProduct extends Component {
         const productTitle = productName + " - " + productVariation;
         const name = +new Date() + "-" + files[i].name;
 
-        self.productImages.push(
-          "images/products/" + productTitle + "/" + name
-        );
+        self.productImages.push("images/products/" + productTitle + "/" + name);
       }
       return self.productImages
         ? resolve(self.productImages)
@@ -178,18 +174,6 @@ export default class AddProduct extends Component {
                     onChange={this.handleChange}
                   />
                   <FormGroup
-                    id="productMaterial"
-                    name="Material"
-                    value={this.state.productMaterial}
-                    onChange={this.handleChange}
-                  />
-                  <FormGroup
-                    id="productPrint"
-                    name="Print"
-                    value={this.state.productPrint}
-                    onChange={this.handleChange}
-                  />
-                  <FormGroup
                     id="productSmallQuantity"
                     name="Small"
                     type="number"
@@ -209,6 +193,19 @@ export default class AddProduct extends Component {
                     type="number"
                     value={this.state.productLargeQuantity}
                     onChange={this.handleChange}
+                  />
+                  <FormGroup
+                    id="productPrice"
+                    name="Price"
+                    type="number"
+                    value={this.state.productPrice}
+                    onChange={this.handleChange}
+                  />
+                  <FormGroup
+                    onChange={this.handleChange}
+                    id="productDescription"
+                    type="textarea"
+                    name="Description"
                   />
                   <FormGroup
                     onChange={this.handleChange}

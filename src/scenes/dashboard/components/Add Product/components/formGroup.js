@@ -36,6 +36,20 @@ export class FormGroup extends Component {
             />
           </div>
         );
+      case "textarea":
+        return (
+          <div className="col-sm-6 form-group">
+            <textarea
+              name={`${inputName}`}
+              id={`${inputId}`}
+              cols="30"
+              rows="5"
+              onChange={inputOnChange}
+              placeholder={`${inputName}`}
+              required
+            />
+          </div>
+        );
       default:
         return (
           <div className="col-sm-6 form-group">
