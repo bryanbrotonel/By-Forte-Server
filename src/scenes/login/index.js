@@ -68,7 +68,7 @@ export default class Login extends Component {
           });
       })
       .catch(function() {
-        alert('Inalid credentials')
+        alert('Ivnalid credentials')
         self.setState({
           user: false
         });
