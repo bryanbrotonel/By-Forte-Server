@@ -100,14 +100,27 @@ function sendInvoiceEmail(email, order) {
           <a href="mailto:${gmailEmail}">${gmailEmail}</a>
         </div>
         <div style="display: inline-block; float: right;">
+<<<<<<< HEAD
           <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2F%20By%20Forte%20Email%20Logo.png?alt=media&token=921650de-d8ba-4790-b37d-1d4b66fda53f" alt="By Forte">
+=======
+          <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2FBy%20Forte%20Email%20Logo.png?alt=media&token=1c53746e-360c-4fe4-9cf4-035c9feab931" alt="By Forte">
+>>>>>>> 66c0e55a42e6817ede8124102cea094de4438c64
         </div>
       </div>
       <div>
         <br>
         <div>
+<<<<<<< HEAD
           <h3 style="font-family: 'Lato', sans-serif; margin: 0;">Order #${order.orderID}</h3>
           <p style="font-family: 'Helvetica', sans-serif;">To: ${customerInfo.firstName + " " + customerInfo.lastName}
+=======
+          <h3 style="font-family: 'Lato', sans-serif; margin: 0;">Order #${
+            order.orderID
+          }</h3>
+          <p style="font-family: 'Helvetica', sans-serif;">To: ${customerInfo.firstName +
+            " " +
+            customerInfo.lastName}
+>>>>>>> 66c0e55a42e6817ede8124102cea094de4438c64
           </p>
         </div>
         <div style="font-family: 'Helvetica', sans-serif; ">
