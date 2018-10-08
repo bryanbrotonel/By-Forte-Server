@@ -1,0 +1,11 @@
+.app {
+  min-height: 100vh;
+}
+
+.middle-align {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
