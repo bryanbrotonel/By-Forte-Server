@@ -4,17 +4,17 @@
   "private": true,
   "dependencies": {
     "cryptiles": "^4.1.2",
-    "eslint": "^4.19.1",
+    "eslint": "^5.6.1",
     "eslint-plugin-react": "^7.11.1",
     "firebase": "^5.5.3",
-    "firebase-admin": "^5.13.1",
+    "firebase-admin": "^6.0.0",
     "firebase-functions": "^2.0.5",
     "moment": "^2.22.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-loadable": "^5.5.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^2.0.4",
     "reactstrap": "^6.5.0"
   },
   "scripts": {
