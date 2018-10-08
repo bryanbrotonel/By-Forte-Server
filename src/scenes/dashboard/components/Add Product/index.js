@@ -65,18 +65,23 @@ export default class AddProduct extends Component {
   handleChange = ({ target: { id, value, files, type } }) => {
     const self = this;
 
-    if (type === "file") {
-      this.handleProductImageInput(files)
-        .then(function(productImagesPaths) {
-          self.files = files;
-          value = productImagesPaths;
-          self.setState({ [id]: value });
-        })
-        .catch(function(productImagesPaths) {
-          console.log("ERROR", productImagesPaths);
-        });
-    } else {
-      this.setState({ [id]: value });
+    switch (type) {
+      case "file":
+        this.handleProductImageInput(files)
+          .then(function(productImagesPaths) {
+            self.files = files;
+            value = productImagesPaths;
+            self.setState({ [id]: value });
+          })
+          .catch(function(productImagesPaths) {
+            console.log("ERROR", productImagesPaths);
+          });
+        break;
+      case "number":
+        this.setState({ [id]: parseInt(value, 10) });
+        break;
+      default:
+        this.setState({ [id]: value });
     }
   };
 
@@ -153,6 +158,7 @@ export default class AddProduct extends Component {
     var divStyle = {
       minheight: "100%"
     };
+
     return (
       <React.Fragment>
         <div className="card mx-auto" style={divStyle}>
