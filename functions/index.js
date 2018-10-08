@@ -68,22 +68,21 @@ function sendInvoiceEmail(email, order) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.5/css/uikit.min.css" />
-    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
 
     <style>
       @font-face {
-        font-family: 'Oswald';
+        font-family: 'Lato';
         font-style: normal;
         font-weight: 400;
-        src: local('Oswald Regular'), local('Oswald-Regular'), url('https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752GT8D.ttf') format('truetype');
+        src: local('Lato'), local('Lato'), url('https://fonts.gstatic.com/s/lato/v14/S6uyw4BMUTPHjx4wXiWtFCc.woff2') format('truetype');
       }
 
       @font-face {
-        font-family: 'Roboto';
+        font-family: 'Helvetica';
         font-style: normal;
         font-weight: 400;
-        src: local('Roboto'), local('Roboto-Regular'), url('https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf') format('truetype');
       }
 
       body {
@@ -97,32 +96,27 @@ function sendInvoiceEmail(email, order) {
     <div style="margin: 0 auto; padding: 0 20px; max-width: 800px;">
       <div style="padding-top: 20px;">
         <div style="display: inline-block;">
-          <h2 style="font-family: 'Oswald', sans-serif; margin: 0;">By Forte</h2>
+          <h2 style="font-family: 'Lato', sans-serif; margin: 0;">By Forte</h2>
           <a href="mailto:${gmailEmail}">${gmailEmail}</a>
         </div>
         <div style="display: inline-block; float: right;">
-          <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2FBy%20Forte%20Primary%20Logo%20Email.png?alt=media&amp;token=66447c8f-373b-40e9-b51e-45ff1a994ff0" alt="By Forte">
+          <img src="https://firebasestorage.googleapis.com/v0/b/by-forte.appspot.com/o/logos%2F%20By%20Forte%20Email%20Logo.png?alt=media&token=921650de-d8ba-4790-b37d-1d4b66fda53f" alt="By Forte">
         </div>
       </div>
       <div>
         <br>
         <div>
-          <h3 style="font-family: 'Oswald', sans-serif; margin: 0;">Order #${order.orderID}</h3>
-          <p style="font-family: 'Roboto', sans-serif;">To: ${customerInfo.firstName + " " + customerInfo.lastName}
+          <h3 style="font-family: 'Lato', sans-serif; margin: 0;">Order #${order.orderID}</h3>
+          <p style="font-family: 'Helvetica', sans-serif;">To: ${customerInfo.firstName + " " + customerInfo.lastName}
           </p>
         </div>
-        <br>
-        <div style="font-family: 'Roboto', sans-serif; ">
+        <div style="font-family: 'Helvetica', sans-serif; ">
           <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to
-            <a href="mailto:${gmailEmail}">${gmailEmail}</a>
-          </p>
-          <p>
-            The deadline for all payments is June 15, 2018 11:59 PM. All orders will begin processing after the deadline.
+            <a href="mailto:${gmailEmail}">${gmailEmail}</a>. All orders will begin processing after the deadline.
           </p>
         </div>
-        <br>
         <div>
-          <p style="font-family: 'Roboto', sans-serif;"><strong>Date:</strong> ${date} ${time}<br>
+          <p style="font-family: 'Helvetica', sans-serif;"><strong>Date:</strong> ${date} ${time}<br>
             <strong>Order Number:</strong> #${order.orderID}<br>
             <strong>Payment Method:</strong> E-Transfer/Cash
           </p>
@@ -133,7 +127,7 @@ function sendInvoiceEmail(email, order) {
           ${cartItemRows}
         </div>
         <br>
-        <div style="background-color: #FAFAFA; padding: 10px 10px 10px 0; font-size: 20px; font-family: 'Roboto', sans-serif;" align="right">
+        <div style="background-color: #FAFAFA; padding: 10px 10px 10px 0; font-size: 20px; font-family: 'Helvetica', sans-serif;" align="right">
           <div>
             <p style="margin: 0;">
               <strong>Subtotal:</strong> $${cart.subtotal}</p>
@@ -145,7 +139,7 @@ function sendInvoiceEmail(email, order) {
         </div>
         <br>
         <div style="" align="center">
-          <p style="font-family: 'Roboto', sans-serif;">Thank you for your purchase <br> If you have any questions, please contact us by email at
+          <p style="font-family: 'Helvetica', sans-serif;">Thank you for your purchase <br> If you have any questions, please contact us by email at
             <a href="mailto:${gmailEmail}">${gmailEmail}</a>.<br>
             <strong><a href="https://byforte.store">WWW.BYFORTE.STORE</a></strong>
           </p>
