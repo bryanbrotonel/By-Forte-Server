@@ -1,0 +1,17 @@
+[debug] [2018-10-15T07:14:51.452Z] ----------------------------------------------------------------------
+[debug] [2018-10-15T07:14:51.455Z] Command:       /usr/local/bin/node /Users/bryan/.npm-packages/bin/firebase deploy --only functions
+[debug] [2018-10-15T07:14:51.455Z] CLI Version:   5.0.1
+[debug] [2018-10-15T07:14:51.455Z] Platform:      darwin
+[debug] [2018-10-15T07:14:51.455Z] Node Version:  v8.10.0
+[debug] [2018-10-15T07:14:51.456Z] Time:          Mon Oct 15 2018 00:14:51 GMT-0700 (PDT)
+[debug] [2018-10-15T07:14:51.456Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-15T07:14:51.476Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-15T07:14:51.476Z] > authorizing via signed-in user
+[debug] [2018-10-15T07:14:51.477Z] [iam] checking project by-forte for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2018-10-15T07:14:51.478Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-10-15T07:14:51.478Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2018-10-15T07:14:51.727Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-15T07:14:51.767Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/by-forte:testIamPermissions  
+
