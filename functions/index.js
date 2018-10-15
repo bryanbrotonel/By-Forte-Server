@@ -115,7 +115,7 @@ function sendInvoiceEmail(email, order) {
             <a href="mailto:${gmailEmail}">${gmailEmail}</a>.
           </p>
           <p>
-          The deadline for all payments is Oct 22, 2018 11: 59 PM. All orders will begin processing after the deadline.
+          The deadline for all payments is Oct 22, 2018 11:59 PM. All orders will begin processing after the deadline.
           </p>
         </div>
         <div>
