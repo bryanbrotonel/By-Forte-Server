@@ -112,7 +112,10 @@ function sendInvoiceEmail(email, order) {
         </div>
         <div style="font-family: 'Helvetica', sans-serif; ">
           <p>Thank you for placing your order with By Forte. Your order number and details are listed below. All e-Transfers should be directed to
-            <a href="mailto:${gmailEmail}">${gmailEmail}</a>. All orders will begin processing after the deadline.
+            <a href="mailto:${gmailEmail}">${gmailEmail}</a>.
+          </p>
+          <p>
+          The deadline for all payments is Oct 22, 2018 11: 59 PM. All orders will begin processing after the deadline.
           </p>
         </div>
         <div>
